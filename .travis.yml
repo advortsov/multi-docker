@@ -1,0 +1,21 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t advortsov/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run advortsov/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t advortsov/multi-client ./client
+  - docker build -t advortsov/multi-nginx ./nginx
+  - docker build -t advortsov/multi-server ./server
+  - docker build -t advortsov/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push advortsov/multi-client
+  - docker push advortsov/multi-nginx
+  - docker push advortsov/multi-server
+  - docker push advortsov/multi-worker
