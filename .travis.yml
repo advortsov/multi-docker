@@ -3,19 +3,19 @@ services:
   - docker
 
 before_install:
-  - docker build -t advortsov/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t advortco/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run advortsov/react-test npm test -- --coverage
+  - docker run advortco/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t advortsov/multi-client ./client
-  - docker build -t advortsov/multi-nginx ./nginx
-  - docker build -t advortsov/multi-server ./server
-  - docker build -t advortsov/multi-worker ./worker
+  - docker build -t advortco/multi-client ./client
+  - docker build -t advortco/multi-nginx ./nginx
+  - docker build -t advortco/multi-server ./server
+  - docker build -t advortco/multi-worker ./worker
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push advortsov/multi-client
-  - docker push advortsov/multi-nginx
-  - docker push advortsov/multi-server
-  - docker push advortsov/multi-worker
+  - docker push advortco/multi-client
+  - docker push advortco/multi-nginx
+  - docker push advortco/multi-server
+  - docker push advortco/multi-worker
